@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mymo/components/main_button.dart';
 import 'package:mymo/components/home/main_moments.dart';
-import 'package:mymo/components/home/swiper.dart';
+import 'package:mymo/components/home/main_swiper.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
