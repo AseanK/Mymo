@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mymo/components/home/analog_progress_indicator.dart';
-import 'package:mymo/components/title_label.dart';
 import 'package:mymo/providers/time_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:provider/provider.dart';
@@ -20,34 +19,33 @@ class MainSwiper extends StatelessWidget {
       timeProvider.minutePosition,
     ];
 
+    List<String> clockTypes = [
+      'Year',
+      'Month',
+      'Week',
+      'Day',
+      'Hour',
+      'Minute'
+    ];
+
     return SizedBox(
       height: 400,
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          TitleLabel(label: "Mymo"),
-          Builder(
-            builder: (context) {
-              return CarouselSlider(
-                options: CarouselOptions(viewportFraction: 1.0, height: 300),
-                items: clockList
-                    .map(
-                      (item) => Container(
-                          alignment: Alignment.center,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage("assets/3.png"),
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          child: AnalogProgressIndicator(progress: item)),
-                    )
-                    .toList(),
-              );
-            },
-          ),
-        ],
+      child: Builder(
+        builder: (context) {
+          return CarouselSlider(
+            options: CarouselOptions(viewportFraction: 1.0, height: 300),
+            items: clockList
+                .asMap()
+                .entries
+                .map(
+                  (entry) => AnalogProgressIndicator(
+                      progress: entry.value,
+                      label: clockTypes[entry.key],
+                      value: "${(entry.value * 100).toInt()}%"),
+                )
+                .toList(),
+          );
+        },
       ),
     );
   }

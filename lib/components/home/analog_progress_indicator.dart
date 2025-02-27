@@ -1,26 +1,52 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:mymo/components/constants.dart';
+
 class AnalogProgressIndicator extends StatelessWidget {
   final double progress; // Progress value between 0.0 to 1.0 (0% to 100%)
+  final String label;
+  final String value;
 
-  const AnalogProgressIndicator({super.key, required this.progress});
+  const AnalogProgressIndicator(
+      {super.key,
+      required this.progress,
+      required this.label,
+      required this.value});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400,
-      alignment: Alignment.center,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/3.png"),
-          fit: BoxFit.contain,
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Text(label),
+        Expanded(
+          child: Stack(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(top: 100),
+                child: Center(
+                  child: Text(value),
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/3.png"),
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                child: CustomPaint(
+                  size: const Size(double.infinity,
+                      double.infinity), // Adjust the size as needed
+                  painter: ClockHandPainter(progress),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      child: CustomPaint(
-        size: const Size(200, 200), // Adjust the size as needed
-        painter: ClockHandPainter(progress),
-      ),
+      ],
     );
   }
 }
@@ -36,20 +62,20 @@ class ClockHandPainter extends CustomPainter {
     final radius = min(size.width / 2, size.height / 2);
 
     // Draw clock face
-    // final clockFacePaint = Paint()
-    //   ..color = Colors.black12
-    //   ..style = PaintingStyle.stroke
-    //   ..strokeWidth = 2.0;
-    //
-    // canvas.drawCircle(center, radius, clockFacePaint);
+    final clockFacePaint = Paint()
+      ..color = kFourthColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.0;
+
+    canvas.drawCircle(center, 1, clockFacePaint);
 
     // Calculate the angle for the hand
     final double angle = (2 * pi * progress) - (pi / 2);
 
     // Draw clock hand
     final handPaint = Paint()
-      ..color = Colors.red
-      ..strokeWidth = 4.0
+      ..color = kFourthColor
+      ..strokeWidth = 3.0
       ..strokeCap = StrokeCap.round;
 
     final handLength = radius * 0.8;
